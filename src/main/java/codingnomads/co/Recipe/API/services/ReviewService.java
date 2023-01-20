@@ -1,5 +1,6 @@
 package codingnomads.co.Recipe.API.services;
 
+import codingnomads.co.Recipe.API.exceptions.CmonBroException;
 import codingnomads.co.Recipe.API.exceptions.NoSuchRecipeException;
 import codingnomads.co.Recipe.API.exceptions.NoSuchReviewException;
 import codingnomads.co.Recipe.API.models.Recipe;
@@ -50,9 +51,13 @@ public class ReviewService {
         return reviews;
     }
 
-    public Recipe postNewReview(Review review, Long recipeId) throws NoSuchRecipeException {
+    public Recipe postNewReview(Review review, Long recipeId, int rating) throws CmonBroException, NoSuchRecipeException {
+
         Recipe recipe = recipeService.getRecipeById(recipeId);
         recipe.getReviews().add(review);
+        if (recipe.getUsername().equals(review.getUsername())) {
+            throw new CmonBroException("Come on bro, we all know this is your own recipe..");
+        }
         recipeService.updateRecipe(recipe, false);
         return recipe;
     }
@@ -77,6 +82,7 @@ public class ReviewService {
         reviewRepo.save(reviewToUpdate);
         return reviewToUpdate;
     }
+
 
 
 }

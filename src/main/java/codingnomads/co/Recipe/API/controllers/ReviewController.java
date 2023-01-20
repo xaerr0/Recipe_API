@@ -1,5 +1,6 @@
 package codingnomads.co.Recipe.API.controllers;
 
+import codingnomads.co.Recipe.API.exceptions.CmonBroException;
 import codingnomads.co.Recipe.API.exceptions.NoSuchRecipeException;
 import codingnomads.co.Recipe.API.exceptions.NoSuchReviewException;
 import codingnomads.co.Recipe.API.models.Recipe;
@@ -52,9 +53,9 @@ public class ReviewController {
     @PostMapping("/{recipeId}")
     public ResponseEntity<?> postNewReview(@RequestBody Review review, @PathVariable("recipeId") Long recipeId) {
         try {
-            Recipe insertedRecipe = reviewService.postNewReview(review, recipeId);
+            Recipe insertedRecipe = reviewService.postNewReview(review, recipeId, review.getRating());
             return ResponseEntity.created(insertedRecipe.getLocationURI()).body(insertedRecipe);
-        } catch (NoSuchRecipeException e) {
+        } catch (NoSuchRecipeException | CmonBroException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

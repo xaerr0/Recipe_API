@@ -23,14 +23,21 @@ public class Review {
     private String username;
 
     @NotNull
-    private int rating;
+    private Integer rating;
 
     private String description;
 
-    public void setRating(int rating) {
+
+
+    public void setRating(Integer rating) {
+        if (rating == null) {
+            throw new IllegalStateException("You must include a rating with your review.");
+        }
         if (rating <= 0 || rating > 10) {
             throw new IllegalStateException("Rating must be between 0 and 10.");
         }
         this.rating = rating;
     }
+
+
 }

@@ -49,7 +49,7 @@ public class Recipe {
 
     @ManyToOne
     @JoinColumn(name = "user_name_id")
-    private User username;
+    private String username;
 
     @Transient
     @JsonIgnore
@@ -98,5 +98,7 @@ public class Recipe {
         }
         return averageRating;
     }
+
+
 
 }

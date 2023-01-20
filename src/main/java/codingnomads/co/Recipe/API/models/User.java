@@ -4,6 +4,7 @@ package codingnomads.co.Recipe.API.models;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -17,10 +18,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @NotNull
     public String username;
 
-    @Column(nullable = false)
+    @NotNull
     public String email;
 
     @Column
