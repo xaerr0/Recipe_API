@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -84,4 +85,41 @@ public class RecipeService {
                                             " Double check that it is correct. Or maybe you meant to POST a recipe not PATCH one.");
         }
     }
+
+    public List<Recipe> getRecipesByMinAverage(Double averageRating) throws NoSuchRecipeException {
+        List<Recipe> recipes = recipeRepo.findByAverageRatingGreaterThanEqual(averageRating);
+
+        if (recipes.isEmpty()) {
+            throw new NoSuchRecipeException("No recipes could be found with or greater than that rating.");
+        }
+        return recipes;
+    }
+
+    public List<Recipe> getRecipeNameAndAverage(String name, Double minAverageRating) throws NoSuchRecipeException {
+        List<Recipe> recipes = recipeRepo.findByNameAndAverageRatingLessThanEqual(name, minAverageRating);
+
+        if (recipes.isEmpty()) {
+            throw new NoSuchRecipeException("No recipes could be found with that name.");
+        }
+        return recipes;
+    }
+
+    public List<Recipe> getRecipesByRating(Double rating) throws NoSuchRecipeException {
+        List<Recipe> recipes = recipeRepo.findByAverageRating(rating);
+
+        if (recipes.isEmpty()) {
+            throw new NoSuchRecipeException("No recipes could be found with that rating.");
+        }
+        return recipes;
+    }
+
+    public List<Recipe> getRecipesByUserName(String username) throws NoSuchRecipeException {
+        List<Recipe> recipes = recipeRepo.findAllByUserName(username);
+
+        if (recipes.isEmpty()) {
+            throw new NoSuchRecipeException("No recipes could be found from that username");
+        }
+        return recipes;
+    }
+
 }

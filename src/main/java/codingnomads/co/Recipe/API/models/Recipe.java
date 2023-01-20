@@ -44,6 +44,13 @@ public class Recipe {
     @JoinColumn(name = "recipeId", nullable = false, foreignKey = @ForeignKey)
     private Collection<Review> reviews = new ArrayList<>();
 
+    @Column
+    private double averageRating;
+
+    @ManyToOne
+    @JoinColumn(name = "user_name_id")
+    private User username;
+
     @Transient
     @JsonIgnore
     private URI locationURI;
@@ -59,7 +66,7 @@ public class Recipe {
     public void validate() throws IllegalStateException {
         if (ingredients.size() == 0) {
             throw new IllegalStateException("You have to have at least one ingredient for your recipe!");
-        } else if (steps.size() == 0 ) {
+        } else if (steps.size() == 0) {
             throw new IllegalStateException("You have to include at least one step for your recipe!");
         }
     }
@@ -76,4 +83,20 @@ public class Recipe {
             //Exception should stop here
         }
     }
+
+
+    public Double getAverageRating() {
+        return calculateAverageRating();
+    }
+    private Double calculateAverageRating() {
+        Double averageRating = 0.0;
+        if (reviews != null && !reviews.isEmpty()) {
+            for (Review review : reviews) {
+                averageRating += review.getRating();
+            }
+            averageRating /= reviews.size();
+        }
+        return averageRating;
+    }
+
 }
