@@ -47,7 +47,7 @@ public class Recipe {
     @Column
     private double averageRating;
 
-    @ManyToOne
+//    @ManyToOne
     @JoinColumn(name = "user_name_id")
     private String username;
 

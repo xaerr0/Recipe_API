@@ -53,7 +53,7 @@ public class ReviewController {
     @PostMapping("/{recipeId}")
     public ResponseEntity<?> postNewReview(@RequestBody Review review, @PathVariable("recipeId") Long recipeId) {
         try {
-            Recipe insertedRecipe = reviewService.postNewReview(review, recipeId, review.getRating());
+            Recipe insertedRecipe = reviewService.postNewReview(review, recipeId);
             return ResponseEntity.created(insertedRecipe.getLocationURI()).body(insertedRecipe);
         } catch (NoSuchRecipeException | CmonBroException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
