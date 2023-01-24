@@ -68,7 +68,7 @@ public class RecipeController {
         }
     }
 
-    @PatchMapping
+    @PatchMapping("/{id}")
     public ResponseEntity<?> updateRecipe(@RequestBody Recipe updatedRecipe) {
         try {
             Recipe returnedUpdatedRecipe = recipeService.updateRecipe(updatedRecipe, true);
@@ -88,7 +88,7 @@ public class RecipeController {
     }
 
 
-    @GetMapping("/search/username/{rating}")
+    @GetMapping("/search/{rating}")
     public ResponseEntity<?> getRecipesByRating(@PathVariable("rating") Double rating) {
         try {
             return ResponseEntity.ok("The recipes with a rating of " + rating + "are " +
@@ -103,8 +103,7 @@ public class RecipeController {
         List<Recipe> recipes = recipeService.getRecipesByUserName(username);
 
         try {
-            return ResponseEntity.ok("The recipes posted by username" + username + " : " +
-                                     recipeService.getRecipesByUserName(username));
+            return ResponseEntity.ok(recipeService.getRecipesByUserName(username));
         } catch (NoSuchRecipeException e) {
             throw new NoSuchRecipeException(e.getMessage());
         }

@@ -1,11 +1,13 @@
 package codingnomads.co.Recipe.API.models;
 
 
+import codingnomads.co.Recipe.API.exceptions.CmonBroException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -22,6 +24,11 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    //    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "user_name_id")
+    private String username;
 
     @Column(nullable = false)
     private String name;
@@ -47,9 +54,7 @@ public class Recipe {
     @Column
     private double averageRating;
 
-//    @ManyToOne
-    @JoinColumn(name = "user_name_id")
-    private String username;
+
 
     @Transient
     @JsonIgnore
@@ -64,6 +69,7 @@ public class Recipe {
 
 
     public void validate() throws IllegalStateException {
+        Review review = new Review();
         if (ingredients.size() == 0) {
             throw new IllegalStateException("You have to have at least one ingredient for your recipe!");
         } else if (steps.size() == 0) {
@@ -85,19 +91,23 @@ public class Recipe {
     }
 
 
-    public Double getAverageRating() {
-        return calculateAverageRating();
-    }
-    private Double calculateAverageRating() {
-        Double averageRating = 0.0;
+
+    public void calculateAverageRating() {
+        averageRating = 0.0;
         if (reviews != null && !reviews.isEmpty()) {
             for (Review review : reviews) {
                 averageRating += review.getRating();
             }
             averageRating /= reviews.size();
         }
-        return averageRating;
+
     }
+
+//    public void checkAuthor(Review review) throws CmonBroException {
+//        if (username.equals(review.getUsername())) {
+//            throw new CmonBroException("Come on bro, we all know this is your own recipe..");
+//        }
+//    }
 
 
 

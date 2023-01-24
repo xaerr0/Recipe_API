@@ -55,10 +55,12 @@ public class ReviewService {
 
         Recipe recipe = recipeService.getRecipeById(recipeId);
         recipe.getReviews().add(review);
+        recipe.calculateAverageRating();
         if (recipe.getUsername().equals(review.getUsername())) {
-            throw new CmonBroException("Come on bro, we all know this is your own recipe..");
+            throw new CmonBroException("C'mon Bro we all know you wrote this recipe.");
+        } else {
+            recipeService.updateRecipe(recipe, false);
         }
-        recipeService.updateRecipe(recipe, false);
         return recipe;
     }
 
@@ -82,7 +84,4 @@ public class ReviewService {
         reviewRepo.save(reviewToUpdate);
         return reviewToUpdate;
     }
-
-
-
 }

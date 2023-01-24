@@ -29,15 +29,12 @@ public class Review {
 
 
 
-    public void setRating(Integer rating) {
+    public void validateRating() {
         if (rating == null) {
             throw new IllegalStateException("You must include a rating with your review.");
         }
         if (rating <= 0 || rating > 10) {
             throw new IllegalStateException("Rating must be between 0 and 10.");
         }
-        this.rating = rating;
     }
-
-
 }
