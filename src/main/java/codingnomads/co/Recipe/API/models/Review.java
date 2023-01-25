@@ -27,8 +27,6 @@ public class Review {
 
     private String description;
 
-
-
     public void validateRating() {
         if (rating == null) {
             throw new IllegalStateException("You must include a rating with your review.");

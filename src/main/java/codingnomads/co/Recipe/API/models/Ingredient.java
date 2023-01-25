@@ -19,7 +19,6 @@ public class Ingredient {
     @GeneratedValue
     private Long id;
 
-
     @NotNull
     private String name;
 

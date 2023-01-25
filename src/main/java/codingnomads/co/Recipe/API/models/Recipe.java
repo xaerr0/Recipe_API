@@ -25,7 +25,6 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //    @ManyToOne
     @NotNull
     @JoinColumn(name = "user_name_id")
     private String username;
@@ -54,11 +53,10 @@ public class Recipe {
     @Column
     private double averageRating;
 
-
-
     @Transient
     @JsonIgnore
     private URI locationURI;
+
 
     public void setDifficultyRating(int difficultyRating) {
         if (difficultyRating < 0 || difficultyRating > 10) {
@@ -66,7 +64,6 @@ public class Recipe {
         }
         this.difficultyRating = difficultyRating;
     }
-
 
     public void validate() throws IllegalStateException {
         Review review = new Review();
@@ -84,13 +81,10 @@ public class Recipe {
                             .path("/recipes/")
                             .path(String.valueOf(id))
                             .toUriString());
-
         } catch (URISyntaxException e) {
             //Exception should stop here
         }
     }
-
-
 
     public void calculateAverageRating() {
         averageRating = 0.0;
@@ -100,15 +94,5 @@ public class Recipe {
             }
             averageRating /= reviews.size();
         }
-
     }
-
-//    public void checkAuthor(Review review) throws CmonBroException {
-//        if (username.equals(review.getUsername())) {
-//            throw new CmonBroException("Come on bro, we all know this is your own recipe..");
-//        }
-//    }
-
-
-
 }
