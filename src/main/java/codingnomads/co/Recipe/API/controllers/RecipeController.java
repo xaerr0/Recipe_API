@@ -87,7 +87,6 @@ public class RecipeController {
         }
     }
 
-
     @GetMapping("/search/{rating}")
     public ResponseEntity<?> getRecipesByRating(@PathVariable("rating") Double rating) {
         try {

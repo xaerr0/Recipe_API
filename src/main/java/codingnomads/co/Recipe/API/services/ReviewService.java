@@ -52,7 +52,6 @@ public class ReviewService {
     }
 
     public Recipe postNewReview(Review review, Long recipeId) throws CmonBroException, NoSuchRecipeException {
-
         Recipe recipe = recipeService.getRecipeById(recipeId);
         recipe.getReviews().add(review);
         recipe.calculateAverageRating();
