@@ -13,8 +13,4 @@ public interface ReviewRepo extends JpaRepository<Review, Long> {
 
     ArrayList<Review> findByUsername(String username);
     Optional<Review> findById(Long id);
-
-//    List<Review> getReviewByRecipeId(Long recipeId);
-
-
 }
