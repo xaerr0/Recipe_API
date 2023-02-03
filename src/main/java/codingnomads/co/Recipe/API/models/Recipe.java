@@ -74,6 +74,7 @@ public class Recipe {
         }
     }
 
+
     public void generateLocationURI() {
         try {
             locationURI = new URI(
