@@ -11,6 +11,4 @@ public class RecipeApiApplication {
         SpringApplication.run(RecipeApiApplication.class, args);
 
     }
-
-
 }

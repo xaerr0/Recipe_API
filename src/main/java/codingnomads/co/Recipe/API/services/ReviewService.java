@@ -47,7 +47,6 @@ public class ReviewService {
         if (reviews.isEmpty()) {
             throw new NoSuchReviewException("No reviews could be found for username " + username);
         }
-
         return reviews;
     }
 

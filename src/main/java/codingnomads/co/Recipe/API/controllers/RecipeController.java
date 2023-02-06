@@ -98,7 +98,7 @@ public class RecipeController {
 //    }
 
     @GetMapping("/search/username/{username}")
-    public ResponseEntity<?> getRecipesByUserName(@PathVariable("username") String username)throws NoSuchRecipeException {
+    public ResponseEntity<?> getRecipesByUserName(@PathVariable("username") String username) throws NoSuchRecipeException {
         List<Recipe> recipes = recipeService.getRecipesByUserName(username);
 
         try {

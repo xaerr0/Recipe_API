@@ -221,7 +221,6 @@ public class RecipeApiApplicationTests {
 				.andExpect(jsonPath("$[0].name", Matchers.containsString("potato")));
 	}
 
-
 	@Test
 	@Order(7)
 	public void testGetRecipeByNameFailureBehavior() throws Exception {
@@ -329,6 +328,5 @@ public class RecipeApiApplicationTests {
 				.andExpect(status().isNotFound())
 				//expect error message defined in RecipeService class
 				.andExpect(jsonPath("$").value("There are no recipes yet :( feel free to add one though"));
-
 	}
 }
