@@ -7,6 +7,7 @@ import codingnomads.co.Recipe.API.models.Ingredient;
 import codingnomads.co.Recipe.API.models.Recipe;
 import codingnomads.co.Recipe.API.models.Step;
 import codingnomads.co.Recipe.API.services.RecipeService;
+import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -42,6 +44,9 @@ public class RecipeControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+
+
+    //TODO When I run tests individually, is there a way to have the environmental variables apply to all? (username and pw)
     @Test
     public void testGetRecipeByIdAndDeleteSuccess() throws Exception {
 
@@ -87,7 +92,6 @@ public class RecipeControllerTest {
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(containsString("No recipe was found!")));
-
     }
 
     @Test
@@ -121,15 +125,11 @@ public class RecipeControllerTest {
                 ))
         );
 
-        ArrayList<Recipe> searchedRecipes = recipeService.getRecipesByName("potato");
-        assertThat(searchedRecipes.size()).isEqualTo(2);
-        assertThat(searchedRecipes.get(0).getLocationURI().toURL().toString()).isNotNull();
-        assertThat(searchedRecipes.get(1).getLocationURI().toURL().toString()).isNotNull();
-
-
-
-
-
+        mockMvc.perform(get("/recipes/search/searched"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].name").value(Matchers.containsStringIgnoringCase("potato")))
+                .andExpect(jsonPath("$[1].name").value(Matchers.containsStringIgnoringCase("potato")));
     }
-
 }
