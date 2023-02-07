@@ -17,10 +17,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -83,6 +87,48 @@ public class RecipeControllerTest {
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(containsString("No recipe was found!")));
+
+    }
+
+    @Test
+    public void testGetRecipesByNameSuccess() throws Exception {
+        when(recipeService.getRecipesByName(anyString())).thenReturn(
+                new ArrayList<>(Arrays.asList(
+                        Recipe.builder()
+                                .id(1L)
+                                .name("Baked Potato")
+                                .difficultyRating(1)
+                                .minutesToMake(5)
+                                .ingredients(Set.of(Ingredient.builder().amount("1 jar").name("Potato").build()))
+                                .steps(Set.of(
+                                        Step.builder().description("Grab potato").stepNumber(1).build(),
+                                        Step.builder().description("Microwave Potato for 1200 seconds").stepNumber(2).build(),
+                                        Step.builder().description("Eat immediately. Don't allow to cool").stepNumber(3).build()
+                                ))
+                                .build(),
+
+                        Recipe.builder()
+                                .id(2L)
+                                .name("Raw Potato")
+                                .difficultyRating(10)
+                                .minutesToMake(10)
+                                .ingredients(Set.of(Ingredient.builder().amount("1 jar").name("Potato").build()))
+                                .steps(Set.of(
+                                                Step.builder().description("Crack open potato").stepNumber(1).build(),
+                                                Step.builder().description("Guzzle potato").stepNumber(2).build()
+                                ))
+                                .build()
+                ))
+        );
+
+        ArrayList<Recipe> searchedRecipes = recipeService.getRecipesByName("potato");
+        assertThat(searchedRecipes.size()).isEqualTo(2);
+        assertThat(searchedRecipes.get(0).getLocationURI().toURL().toString()).isNotNull();
+        assertThat(searchedRecipes.get(1).getLocationURI().toURL().toString()).isNotNull();
+
+
+
+
 
     }
 
