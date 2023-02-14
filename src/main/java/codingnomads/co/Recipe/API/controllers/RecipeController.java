@@ -2,10 +2,13 @@ package codingnomads.co.Recipe.API.controllers;
 
 import codingnomads.co.Recipe.API.exceptions.NoSuchRecipeException;
 import codingnomads.co.Recipe.API.models.Recipe;
+import codingnomads.co.Recipe.API.models.securitymodels.CustomUserDetails;
 import codingnomads.co.Recipe.API.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,8 +22,9 @@ public class RecipeController {
     RecipeService recipeService;
 
     @PostMapping
-    public ResponseEntity<?> createNewRecipe(@RequestBody Recipe recipe) {
+    public ResponseEntity<?> createNewRecipe(@RequestBody Recipe recipe, Authentication authentication) {
         try {
+            recipe.setUser((CustomUserDetails) authentication.getPrincipal());
             Recipe insertedRecipe = recipeService.createNewRecipe(recipe);
             return ResponseEntity.created(insertedRecipe.getLocationURI()).body(insertedRecipe);
         } catch (IllegalStateException e) {
@@ -58,6 +62,8 @@ public class RecipeController {
     }
 
     @DeleteMapping("/{id}")
+    //make sure that a user is either an admin or the owner of the recipe before they are allowed to delete
+    @PreAuthorize("hasPermission(#id, 'Recipe', 'delete)")
     public ResponseEntity<?> deleteRecipeById(@PathVariable("id") Long id) {
         try {
             Recipe deletedRecipe = recipeService.deleteRecipeById(id);
