@@ -2,6 +2,7 @@ package codingnomads.co.Recipe.API.models;
 
 
 import codingnomads.co.Recipe.API.exceptions.CmonBroException;
+import codingnomads.co.Recipe.API.models.securitymodels.CustomUserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -37,6 +38,11 @@ public class Recipe {
 
     @Column(nullable = false)
     private Integer difficultyRating;
+
+    @ManyToOne(optional = false)
+    @JoinColumn
+    @JsonIgnore
+    private CustomUserDetails user;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "recipeId", nullable = false, foreignKey = @ForeignKey)
@@ -95,5 +101,9 @@ public class Recipe {
             }
             averageRating /= reviews.size();
         }
+    }
+
+    public String getAuthor() {
+        return user.getUsername();
     }
 }

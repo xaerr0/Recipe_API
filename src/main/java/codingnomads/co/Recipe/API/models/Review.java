@@ -1,12 +1,13 @@
 package codingnomads.co.Recipe.API.models;
 
+import codingnomads.co.Recipe.API.models.securitymodels.CustomUserDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Data
 @Entity
 @Getter
 @Setter
@@ -16,23 +17,37 @@ import javax.validation.constraints.NotNull;
 public class Review {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private String username;
+    @ManyToOne(optional = false)
+    @JoinColumn
+    @JsonIgnore
+    private CustomUserDetails user;
 
-    @NotNull
-    private Integer rating;
+
+    @Column(nullable = false)
+    private int rating;
 
     private String description;
 
-    public void validateRating() {
-        if (rating == null) {
-            throw new IllegalStateException("You must include a rating with your review.");
+    @ManyToOne
+    @JoinColumn(
+            name = "recipeId",
+            nullable = false,
+            foreignKey = @ForeignKey
+    )
+    @JsonIgnore
+    private Recipe recipe;
+
+    public void setRating(int rating) {
+        if(rating <= 0 || rating > 10) {
+            throw new IllegalStateException("Rating must be between 0 and 10");
         }
-        if (rating <= 0 || rating > 10) {
-            throw new IllegalStateException("Rating must be between 0 and 10.");
-        }
+        this.rating = rating;
+    }
+
+    public String getAuthor() {
+        return user.getUsername();
     }
 }
