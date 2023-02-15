@@ -7,13 +7,12 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Data
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "recipe")
 public class Review {
 
     @Id
@@ -25,9 +24,12 @@ public class Review {
     @JsonIgnore
     private CustomUserDetails user;
 
+    @NotNull
+    private String username;
+
 
     @Column(nullable = false)
-    private int rating;
+    private Integer rating;
 
     private String description;
 
@@ -45,6 +47,15 @@ public class Review {
             throw new IllegalStateException("Rating must be between 0 and 10");
         }
         this.rating = rating;
+    }
+
+    public void validateRating() {
+        if (rating == null) {
+            throw new IllegalStateException("You must include a rating with your review.");
+        }
+        if (rating <= 0 || rating > 10) {
+            throw new IllegalStateException("Rating must be between 0 and 10.");
+        }
     }
 
     public String getAuthor() {

@@ -5,9 +5,12 @@ import codingnomads.co.Recipe.API.exceptions.NoSuchRecipeException;
 import codingnomads.co.Recipe.API.exceptions.NoSuchReviewException;
 import codingnomads.co.Recipe.API.models.Recipe;
 import codingnomads.co.Recipe.API.models.Review;
+import codingnomads.co.Recipe.API.models.securitymodels.CustomUserDetails;
 import codingnomads.co.Recipe.API.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -51,9 +54,11 @@ public class ReviewController {
     }
 
     @PostMapping("/{recipeId}")
-    public ResponseEntity<?> postNewReview(@RequestBody Review review, @PathVariable("recipeId") Long recipeId) {
+    public ResponseEntity<?> postNewReview(@RequestBody Review review,
+                                           @PathVariable("recipeId") Long recipeId, Authentication authentication) {
         try {
             review.validateRating();
+            review.setUser((CustomUserDetails) authentication.getPrincipal());
             Recipe insertedRecipe = reviewService.postNewReview(review, recipeId);
             return ResponseEntity.created(insertedRecipe.getLocationURI()).body(insertedRecipe);
         } catch (NoSuchRecipeException | CmonBroException  | IllegalStateException e) {
@@ -62,6 +67,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasPermission(#id, 'Review', 'delete')")
     public ResponseEntity<?> deleteReviewById(@PathVariable("id") Long id) {
         try {
             Review review = reviewService.deleteReviewById(id);
@@ -72,6 +78,7 @@ public class ReviewController {
     }
 
     @PatchMapping
+    @PreAuthorize("hasPermission(#reviewToUpdate.id, 'Review', 'edit')")
     public ResponseEntity<?> updateReviewById(@RequestBody Review reviewToUpdate) {
         try {
             Review review = reviewService.updateReviewById(reviewToUpdate);

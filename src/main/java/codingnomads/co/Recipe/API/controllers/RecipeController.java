@@ -63,7 +63,7 @@ public class RecipeController {
 
     @DeleteMapping("/{id}")
     //make sure that a user is either an admin or the owner of the recipe before they are allowed to delete
-    @PreAuthorize("hasPermission(#id, 'Recipe', 'delete)")
+    @PreAuthorize("hasPermission(#id, 'Recipe', 'delete')")
     public ResponseEntity<?> deleteRecipeById(@PathVariable("id") Long id) {
         try {
             Recipe deletedRecipe = recipeService.deleteRecipeById(id);
@@ -75,6 +75,8 @@ public class RecipeController {
     }
 
     @PatchMapping("/{id}")
+    //make sure that a user is either an admin or the owner of the recipe before they are allowed to update
+    @PreAuthorize("hasPermission(#updatedRecipe.id, 'Recipe', 'edit')")
     public ResponseEntity<?> updateRecipe(@RequestBody Recipe updatedRecipe) {
         try {
             Recipe returnedUpdatedRecipe = recipeService.updateRecipe(updatedRecipe, true);

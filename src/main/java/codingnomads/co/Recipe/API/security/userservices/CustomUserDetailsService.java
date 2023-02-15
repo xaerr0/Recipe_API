@@ -38,6 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     public CustomUserDetails getUserByUserId(Long userId) throws EntityNotFoundException {
+        //TODO why's this crossed out?
         CustomUserDetails user = userRepo.getById(userId);
 
         //call unproxy() to ensure all related entities are loaded—no lazy load exceptions.
