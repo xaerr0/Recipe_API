@@ -2,8 +2,10 @@ package codingnomads.co.Recipe.API.services;
 
 import codingnomads.co.Recipe.API.exceptions.NoSuchRecipeException;
 import codingnomads.co.Recipe.API.models.Recipe;
+import codingnomads.co.Recipe.API.models.securitymodels.CustomUserDetails;
 import codingnomads.co.Recipe.API.repositories.RecipeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,8 @@ public class RecipeService {
 
     @Transactional
     public Recipe createNewRecipe(Recipe recipe) throws IllegalStateException {
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        recipe.setUser(userDetails);
         recipe.validate();
         recipe = recipeRepo.save(recipe);
         recipe.generateLocationURI();
@@ -113,12 +117,13 @@ public class RecipeService {
         return recipes;
     }
 
-    public List<Recipe> getRecipesByUserName(String username) throws NoSuchRecipeException {
-        List<Recipe> recipes = recipeRepo.findAllByUsername(username);
-
-        if (recipes.isEmpty()) {
-            throw new NoSuchRecipeException("No recipes could be found from that username");
-        }
-        return recipes;
-    }
+    //TODO Fix this
+//    public List<Recipe> getRecipesByUserName(String username) throws NoSuchRecipeException {
+//        List<Recipe> recipes = recipeRepo.findAllByUsername(username);
+//
+//        if (recipes.isEmpty()) {
+//            throw new NoSuchRecipeException("No recipes could be found from that username");
+//        }
+//        return recipes;
+//    }
 }

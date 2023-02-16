@@ -41,20 +41,21 @@ public class ReviewService {
         return reviews;
     }
 
-    public ArrayList<Review> getReviewByUsername(String username) throws NoSuchReviewException {
-        ArrayList<Review> reviews = reviewRepo.findByUsername(username);
-
-        if (reviews.isEmpty()) {
-            throw new NoSuchReviewException("No reviews could be found for username " + username);
-        }
-        return reviews;
-    }
+    //TODO Fix this
+//    public ArrayList<Review> getReviewByUsername(String username) throws NoSuchReviewException {
+//        ArrayList<Review> reviews = reviewRepo.findByUsername(username);
+//
+//        if (reviews.isEmpty()) {
+//            throw new NoSuchReviewException("No reviews could be found for username " + username);
+//        }
+//        return reviews;
+//    }
 
     public Recipe postNewReview(Review review, Long recipeId) throws CmonBroException, NoSuchRecipeException {
         Recipe recipe = recipeService.getRecipeById(recipeId);
         recipe.getReviews().add(review);
         recipe.calculateAverageRating();
-        if (recipe.getUsername().equals(review.getUsername())) {
+        if (recipe.getAuthor().equals(review.getAuthor())) {
             throw new CmonBroException("C'mon Bro we all know you wrote this recipe.");
         } else {
             recipeService.updateRecipe(recipe, false);

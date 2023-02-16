@@ -16,7 +16,7 @@ public interface RecipeRepo extends JpaRepository<Recipe, Long> {
 
     ArrayList<Recipe> findByAverageRating(Double rating);
 
-    List<Recipe> findAllByUsername(String userName);
+//    List<Recipe> findAllByUsername(String userName);
 
     List<Recipe> findByAverageRatingGreaterThanEqual(Double averageRating);
 

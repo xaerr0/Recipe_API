@@ -4,6 +4,7 @@ import codingnomads.co.Recipe.API.models.Ingredient;
 import codingnomads.co.Recipe.API.models.Recipe;
 import codingnomads.co.Recipe.API.models.Review;
 import codingnomads.co.Recipe.API.models.Step;
+import codingnomads.co.Recipe.API.models.securitymodels.CustomUserDetails;
 import codingnomads.co.Recipe.API.repositories.RecipeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +29,8 @@ public class RecipeMainTest implements CommandLineRunner {
             Step step1 = Step.builder().description("put flour in bowl").stepNumber(1).build();
             Step step2 = Step.builder().description("eat it?").stepNumber(2).build();
 
-            Review review = Review.builder().description("tasted pretty bad").rating(2).username("idfk").build();
+            Review review = Review.builder().description("tasted pretty bad").rating(2).user(CustomUserDetails.builder()
+                    .username("idfk").build()).build();
 
             Recipe recipe1 = Recipe.builder()
                     .name("test recipe")
@@ -37,7 +39,7 @@ public class RecipeMainTest implements CommandLineRunner {
                     .ingredients(Set.of(ingredient))
                     .steps(Set.of(step1, step2))
                     .reviews(Set.of(review))
-                    .username("Bilbert")
+                    .user(CustomUserDetails.builder().username("Bilbert").build())
                     .build();
 
             recipeRepo.save(recipe1);
@@ -49,7 +51,7 @@ public class RecipeMainTest implements CommandLineRunner {
                     .name("another test recipe")
                     .difficultyRating(10)
                     .minutesToMake(2)
-                    .username("Rupert")
+                    .user(CustomUserDetails.builder().username("Rupbert").build())
                     .build();
             recipeRepo.save(recipe2);
 
@@ -59,13 +61,13 @@ public class RecipeMainTest implements CommandLineRunner {
                     .name("another another test recipe")
                     .difficultyRating(5)
                     .minutesToMake(2)
-                    .username("Johniffer")
+                    .user(CustomUserDetails.builder().username("Johnnifer").build())
                     .build();
 
             recipeRepo.save(recipe3);
 
             Recipe recipe4 = Recipe.builder()
-                    .username("StevieNix")
+                    .user(CustomUserDetails.builder().username("Stevie").build())
                     .name("chocolate and potato chips")
                     .difficultyRating(10)
                     .minutesToMake(1)
@@ -75,7 +77,8 @@ public class RecipeMainTest implements CommandLineRunner {
                     .steps(Set.of(
                             Step.builder().stepNumber(1).description("eat both items together").build()))
                     .reviews(Set.of(
-                            Review.builder().username("ben").rating(10).description("this stuff is so good").build()
+                            Review.builder().user(CustomUserDetails.builder().
+                                    username("ben").build()).rating(10).description("this stuff is so good").build()
                     ))
                     .build();
 

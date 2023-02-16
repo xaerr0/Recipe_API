@@ -24,9 +24,9 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @JoinColumn(name = "user_name_id")
-    private String username;
+//    @NotNull
+//    @JoinColumn(name = "user_name_id")
+//    private String username;
 
     @Column(nullable = false)
     private String name;

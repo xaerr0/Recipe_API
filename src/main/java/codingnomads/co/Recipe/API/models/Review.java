@@ -24,8 +24,8 @@ public class Review {
     @JsonIgnore
     private CustomUserDetails user;
 
-    @NotNull
-    private String username;
+//    @NotNull
+//    private String username;
 
 
     @Column(nullable = false)

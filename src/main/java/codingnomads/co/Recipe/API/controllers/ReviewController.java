@@ -43,15 +43,15 @@ public class ReviewController {
         }
     }
 
-    @GetMapping("/user/{username}")
-    public ResponseEntity<?> getReviewByUsername(@PathVariable("username") String username) {
-        try {
-            ArrayList<Review> reviews = reviewService.getReviewByUsername(username);
-            return ResponseEntity.ok(reviews);
-        } catch (NoSuchReviewException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @GetMapping("/user/{username}")
+//    public ResponseEntity<?> getReviewByUsername(@PathVariable("username") String username) {
+//        try {
+//            ArrayList<Review> reviews = reviewService.getReviewByUsername(username);
+//            return ResponseEntity.ok(reviews);
+//        } catch (NoSuchReviewException e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
     @PostMapping("/{recipeId}")
     public ResponseEntity<?> postNewReview(@RequestBody Review review,
