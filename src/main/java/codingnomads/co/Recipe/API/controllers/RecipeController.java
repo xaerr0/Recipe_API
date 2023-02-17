@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/recipes")
@@ -105,14 +104,12 @@ public class RecipeController {
 //        }
 //    }
 
-//    @GetMapping("/search/username/{username}")
-//    public ResponseEntity<?> getRecipesByUserName(@PathVariable("username") String username) throws NoSuchRecipeException {
-//        List<Recipe> recipes = recipeService.getRecipesByUserName(username);
-//
-//        try {
-//            return ResponseEntity.ok(recipeService.getRecipesByUserName(username));
-//        } catch (NoSuchRecipeException e) {
-//            throw new NoSuchRecipeException(e.getMessage());
-//        }
-//    }
+    @GetMapping("/search/username/{username}")
+    public ResponseEntity<?> getRecipesByUserName(@PathVariable("username") String username) {
+        try {
+            return ResponseEntity.ok(recipeService.getRecipesByUserName(username));
+        } catch (NoSuchRecipeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }

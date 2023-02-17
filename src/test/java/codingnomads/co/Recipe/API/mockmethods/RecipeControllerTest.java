@@ -46,7 +46,7 @@ public class RecipeControllerTest {
 
 
 
-    //TODO When I run tests individually, is there a way to have the environmental variables apply to all? (username and pw)
+
     @Test
     public void testGetRecipeByIdAndDeleteSuccess() throws Exception {
 

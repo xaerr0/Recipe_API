@@ -25,7 +25,7 @@ public class SecurityConfig {
                         //allow all requests to read recipes and reviews
                         .antMatchers(HttpMethod.GET, "/recipes/**", "/reviews").permitAll()
                         //allow creation of new recipes and reviews
-                        .antMatchers(HttpMethod.POST, "/recipes", "reviews").permitAll()
+                        .antMatchers(HttpMethod.POST, "/recipes", "reviews").authenticated()
                         //all other requests should be authenticated
                         .anyRequest().authenticated())
                 //users should log in with HTTP Basic.

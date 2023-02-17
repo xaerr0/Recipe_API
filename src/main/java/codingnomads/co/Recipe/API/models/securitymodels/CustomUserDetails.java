@@ -30,19 +30,19 @@ public class CustomUserDetails implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Builder.Default
+
     @Column(nullable = false)
     private boolean isAccountNonExpired = true;
 
-    @Builder.Default
+
     @Column(nullable = false)
     private boolean isAccountNonLocked = true;
 
-    @Builder.Default
+
     @Column(nullable = false)
     private boolean isCredentialsNonExpired = true;
 
-    @Builder.Default
+
     @Column(nullable = false)
     private boolean isEnabled = true;
 

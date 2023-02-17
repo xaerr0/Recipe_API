@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
+import java.util.Optional;
 
 
 @Component
@@ -38,9 +39,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     public CustomUserDetails getUserByUserId(Long userId) throws EntityNotFoundException {
-        //TODO why's this crossed out?
-        CustomUserDetails user = userRepo.getById(userId);
 
+        Optional<CustomUserDetails> optional = userRepo.findById(userId);
+        CustomUserDetails user;
+
+        if (optional.isEmpty()) {
+            throw new EntityNotFoundException("user not found");
+        } else {
+            user = optional.get();
+        }
         //call unproxy() to ensure all related entities are loaded—no lazy load exceptions.
         return (CustomUserDetails) Hibernate.unproxy(user);
     }
