@@ -61,7 +61,7 @@ public class ReviewController {
             review.setUser((CustomUserDetails) authentication.getPrincipal());
             Recipe insertedRecipe = reviewService.postNewReview(review, recipeId);
             return ResponseEntity.created(insertedRecipe.getLocationURI()).body(insertedRecipe);
-        } catch (NoSuchRecipeException | CmonBroException  | IllegalStateException e) {
+        } catch (NoSuchRecipeException | CmonBroException | IllegalStateException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
