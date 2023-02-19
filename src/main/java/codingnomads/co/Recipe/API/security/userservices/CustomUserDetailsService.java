@@ -53,7 +53,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public CustomUserDetails getUser(String username) throws EntityNotFoundException  {
+    public CustomUserDetails getUser(String username) throws EntityNotFoundException {
         return userRepo.findByUsername(username);
     }
 

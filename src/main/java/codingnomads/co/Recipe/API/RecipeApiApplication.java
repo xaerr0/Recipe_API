@@ -1,12 +1,14 @@
 package codingnomads.co.Recipe.API;
 
-import codingnomads.co.Recipe.API.models.*;
+import codingnomads.co.Recipe.API.models.Ingredient;
+import codingnomads.co.Recipe.API.models.Recipe;
+import codingnomads.co.Recipe.API.models.Step;
+import codingnomads.co.Recipe.API.models.UserMeta;
 import codingnomads.co.Recipe.API.models.securitymodels.CustomUserDetails;
 import codingnomads.co.Recipe.API.models.securitymodels.Role;
 import codingnomads.co.Recipe.API.repositories.RecipeRepo;
 import codingnomads.co.Recipe.API.repositories.ReviewRepo;
 import codingnomads.co.Recipe.API.repositories.UserRepo;
-import codingnomads.co.Recipe.API.security.userservices.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,11 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
-
-import static codingnomads.co.Recipe.API.models.securitymodels.Role.Roles.ROLE_ADMIN;
-import static codingnomads.co.Recipe.API.models.securitymodels.Role.Roles.ROLE_USER;
 
 @SpringBootApplication
 public class RecipeApiApplication {
