@@ -24,10 +24,6 @@ public class Review {
     @JsonIgnore
     private CustomUserDetails user;
 
-//    @NotNull
-//    private String username;
-
-
     @Column(nullable = false)
     private Integer rating;
 
