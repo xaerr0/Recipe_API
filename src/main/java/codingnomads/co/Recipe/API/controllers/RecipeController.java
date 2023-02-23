@@ -94,16 +94,6 @@ public class RecipeController {
         }
     }
 
-//    @GetMapping("/search/{rating}")
-//    public ResponseEntity<?> getRecipesByRating(@PathVariable("rating") Double rating) {
-//        try {
-//            return ResponseEntity.ok("The recipes with a rating of " + rating + "are " +
-//                                     recipeService.getRecipesByRating(rating));
-//        } catch (NoSuchRecipeException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        }
-//    }
-
     @GetMapping("/search/username/{username}")
     public ResponseEntity<?> getRecipesByUserName(@PathVariable("username") String username) {
         try {
