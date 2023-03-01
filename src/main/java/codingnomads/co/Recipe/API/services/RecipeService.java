@@ -5,6 +5,9 @@ import codingnomads.co.Recipe.API.models.Recipe;
 import codingnomads.co.Recipe.API.models.securitymodels.CustomUserDetails;
 import codingnomads.co.Recipe.API.repositories.RecipeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,7 @@ public class RecipeService {
     RecipeRepo recipeRepo;
 
     @Transactional
+
     public Recipe createNewRecipe(Recipe recipe) throws IllegalStateException {
         CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         recipe.setUser(userDetails);
@@ -29,6 +33,8 @@ public class RecipeService {
         return recipe;
     }
 
+    //TODO Can values be whatever?
+    @Cacheable(value = "recipes", key = "#id", sync = true)
     public Recipe getRecipeById(Long id) throws NoSuchRecipeException {
         Optional<Recipe> recipeOptional = recipeRepo.findById(id);
 
@@ -41,6 +47,7 @@ public class RecipeService {
         return recipe;
     }
 
+    @Cacheable(value = "recipes", key = "#name", sync = true)
     public ArrayList<Recipe> getRecipesByName(String name) throws NoSuchRecipeException {
         ArrayList<Recipe> matchingRecipes = recipeRepo.findByNameContaining(name);
 
@@ -54,6 +61,7 @@ public class RecipeService {
         return matchingRecipes;
     }
 
+    @Cacheable(value = "recipes", key = "#id", sync = true)
     public ArrayList<Recipe> getAllRecipes() throws NoSuchRecipeException {
         ArrayList<Recipe> recipes = new ArrayList<>(recipeRepo.findAll());
 
@@ -64,6 +72,7 @@ public class RecipeService {
     }
 
     @Transactional
+    @CacheEvict(value = "recipes", allEntries = true)
     public Recipe deleteRecipeById(Long id) throws NoSuchRecipeException {
         try {
             Recipe recipe = getRecipeById(id);
@@ -75,6 +84,7 @@ public class RecipeService {
     }
 
     @Transactional
+    @CachePut(value = "recipes", key = "#id")
     public Recipe updateRecipe(Recipe recipe, boolean forceIdCheck) throws NoSuchRecipeException {
         try {
             if (forceIdCheck) {
@@ -90,6 +100,8 @@ public class RecipeService {
         }
     }
 
+
+    @Cacheable(value = "recipes", key = "#rating")
     public List<Recipe> getRecipesByMinAverage(Double averageRating) throws NoSuchRecipeException {
         List<Recipe> recipes = recipeRepo.findByAverageRatingGreaterThanEqual(averageRating);
 
@@ -99,6 +111,7 @@ public class RecipeService {
         return recipes;
     }
 
+    @Cacheable(value = "recipes", key = "#name")
     public List<Recipe> getRecipeNameAndAverage(String name, Double minAverageRating) throws NoSuchRecipeException {
         List<Recipe> recipes = recipeRepo.findByNameAndAverageRatingLessThanEqual(name, minAverageRating);
 
@@ -108,6 +121,7 @@ public class RecipeService {
         return recipes;
     }
 
+    @Cacheable(value = "recipes", key = "#rating")
     public List<Recipe> getRecipesByRating(Double rating) throws NoSuchRecipeException {
         List<Recipe> recipes = recipeRepo.findByAverageRating(rating);
 
@@ -117,6 +131,7 @@ public class RecipeService {
         return recipes;
     }
 
+    @Cacheable(value = "recipes", key = "#username")
     public List<Recipe> getRecipesByUserName(String username) throws NoSuchRecipeException {
         List<Recipe> recipes = recipeRepo.findAllByUser_Username(username);
 
