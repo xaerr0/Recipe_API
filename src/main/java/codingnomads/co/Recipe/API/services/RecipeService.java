@@ -34,7 +34,7 @@ public class RecipeService {
     }
 
     //TODO Can values be whatever?
-    @Cacheable(value = "recipes", key = "#id", sync = true)
+    @Cacheable(value = "recipes", sync = true)
     public Recipe getRecipeById(Long id) throws NoSuchRecipeException {
         Optional<Recipe> recipeOptional = recipeRepo.findById(id);
 
@@ -61,7 +61,7 @@ public class RecipeService {
         return matchingRecipes;
     }
 
-    @Cacheable(value = "recipes", key = "#id", sync = true)
+    @Cacheable(value = "recipes", sync = true)
     public ArrayList<Recipe> getAllRecipes() throws NoSuchRecipeException {
         ArrayList<Recipe> recipes = new ArrayList<>(recipeRepo.findAll());
 
